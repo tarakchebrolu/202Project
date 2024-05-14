@@ -1,101 +1,131 @@
-# e-Learning Management System
+# Spartan Study
 
-A learning management and online assessment system for academic education.
+This project is developed as part of the educational curriculum 
+. It is designed to facilitate both faculty and student interactions on a digital platform.
 
-## Features
+## Team Members
 
-- Admin adds courses, teachers, and students and assigns them courses.
-- The teacher creates course content, announcements, assignments, quizzes, takes attendance, etc. A teacher can see the details and analysis of the assessments.
-- Students can enroll in the courses using the access key, see the course content of the enrolled courses, participate in assessments and see their results in detail.
-- Discussion section for both teacher and student.
+- **Taraka Rama Rao Chebrolu (017449757)** - #write work done
+- **Divik Shrivastava (016726086)** - #write work done
+- **Akhilandeswari Battineni (016762174)** - #write work done
+- **Supriya Katragadda (016942497)** - #write work done
 
-## Relational Schema
+## Project Generated With
+- Angular CLI version 15.2.0
 
-![schema](https://user-images.githubusercontent.com/87283264/187967219-55bea00e-3151-488a-a4be-d2a95b9d8a5c.png)
+## XP Values
 
-## Tech Stack
+### Communication
+- **Regular Virtual Meetings**: Meetings via Zoom or Google Meet to discuss progress and plan next steps.
+- **Collaborative Tools**: Daily interactions through Slack and document sharing via Google Drive.
+- **Pair Programming**: Pair programming for critical tasks to enhance learning and development speed.
+- **Open Communication Channel**: Quick updates via WhatsApp or Discord.
 
-1. Django 4.0.4
-2. Bootstrap 5.0.2
-3. jQuery 3.6.0
-4. Chart.js v3.9.1
-5. Animate.css 4.1.1
+### Simplicity
+- **Prioritize Essential Features**: Focus on essential features to keep the scope manageable.
+- **Incremental Deployment**: Project is broken into manageable parts for incremental development.
+- **Code Refinement**: Regular code reviews to simplify structure and improve readability.
+- **Clear Task Division**: Defined roles and responsibilities minimize overlap and confusion.
 
-## UI
+## Tools and Languages
 
-![Screenshot (65)](https://user-images.githubusercontent.com/87283264/194387627-47bc4506-5acb-46da-8ae0-70ea1e7e4eb8.png)
-![Screenshot (63)](https://user-images.githubusercontent.com/87283264/194389617-1d1118a5-e0a1-41a2-94b6-ef636e6a8d5e.png)
-![Screenshot (70)](https://user-images.githubusercontent.com/87283264/194387776-552bdd11-9252-4be2-8139-10e0f270c09f.png)
-![Screenshot (71)](https://user-images.githubusercontent.com/87283264/194389301-da1f2cd5-11fd-469d-9137-380c4916e169.png)
-![Screenshot (72)](https://user-images.githubusercontent.com/87283264/194389315-c59fbae1-b623-4ef7-bc5b-7cab6c1ae3a8.png)
-![Screenshot (67)](https://user-images.githubusercontent.com/87283264/194387798-77c6ba2c-9089-4469-88e0-282191535211.png)
-![Screenshot (68)](https://user-images.githubusercontent.com/87283264/194387811-bd22cd8c-854c-4849-9aa9-0a71b53494a2.png)
-![Screenshot (69)](https://user-images.githubusercontent.com/87283264/194387822-649bd890-cb57-47b5-b380-4e30499ae142.png)
+- **Backend**: Python, Django
+- **Frontend**: HTML, CSS, jQuery
+- **UI Icons**: Bootstrap and CSS
+- **Database**: SQLite
+- **Deployment**: Amazon Web Services (AWS)
 
-## Run Locally
-
-1. Clone the project
-
-```bash
-git clone https://github.com/nz-m/eLMS-SWE.git
-```
-
-2. Go to the project directory
+## Running the Project Locally
 
 ```bash
-cd eLMS-SWE
-```
+#Clone the Project
 
-3. Create a virtual environment and activate it (Windows)
+git clone https://github.com/gopinathsjsu/team-project-team_polo.git
 
-```bash
-python -m venv env
-```
+# Clone the project repository
+git clone https://github.com/gopinathsjsu/team-project-team_polo.git
 
-```bash
-env\Scripts\activate
-```
+# Navigate into the project directory
+cd team-project-team_polo
 
-4. Install dependencies
+# Set up and activate a virtual environment
+# Windows Users:
+python -m venv env && env\Scripts\activate
+# Mac/Linux Users:
+python3 -m venv env && source env/bin/activate
 
-```bash
-pip install -r requirements.txt
-```
-
-> **Note:** If you're using newer versions of python(3.10+), you may need to add the `--use-deprecated=legacy-resolver` option when installing dependencies with `pip` to avoid errors :
-
-```bash
+# Install dependencies
 pip install -r requirements.txt --use-deprecated=legacy-resolver
-```
 
-5. Make migrations and migrate
+# Set up the database
+python manage.py makemigrations && python manage.py migrate
 
-```bash
-python manage.py makemigrations
-```
-
-```bash
-python manage.py migrate
-```
-
-6. Create admin/superuser
-
-```bash
+# Create a superuser to access the backend admin interface
 python manage.py createsuperuser
-```
 
-7. Finally run the project
-
-```bash
+# Start the server on your local machine
 python manage.py runserver
-```
+````
+## Weekly Scrum Report
 
-Now the project should be running on http://127.0.0.1:8000/
+<p align="center">
+    <a href="https://drive.google.com/file/d/1L4R2h7GJh1sn1nQSBNsFE-CZ58OBqr6C/view?usp=sharing">View Weekly Scrum Report</a>
+</p>
 
-Login as admin and add some courses, teacher and students.
+## Scrum Backlog 
+<p align="center">
+    <a href="https://drive.google.com/file/d/1s9Qp74akkJ0yzQ9V7JsYMYADGpfo0oG2/view?usp=sharing">Scrum Backlog</a>
+</p>
 
-Demo : https://youtu.be/NyL2ajUNxYk
+## Burndown Chart
 
-## License
+<p align="center">
+<img width="738" alt="Screenshot 2024-05-09 at 9 22 46 PM" src="https://github.com/gopinathsjsu/team-project-team_polo/assets/147278071/28b0a4cb-acd7-4034-b22e-de3451a29f74">
+</p>
 
-[The MIT License (MIT)](https://github.com/nz-m/eLMS-SWE/blob/main/LICENCE)
+
+## UI Wireframes
+
+<p align="center">
+    <img src="https://share.balsamiq.com/c/hFgh9WE53CNndh3fVjjvLj.png" width="400">
+    <img src="https://share.balsamiq.com/c/xqXcwrrjnRRoLvckWtCb31.png" width="400">
+    <img src="https://share.balsamiq.com/c/nYoB3Nz5p53UFTty9oigU9.png" width="400">
+    <img src="https://share.balsamiq.com/c/4Vwr4cB7gWZprRJaKFHfPR.png" width="400">
+    <img src="https://share.balsamiq.com/c/qPuJFZTXzARoNsGGpNcm7H.png" width="400">
+    <img src="https://share.balsamiq.com/c/pG3Mky5wGLYriH784bM3KG.png" width="400">
+    <img src="https://share.balsamiq.com/c/cGUbpxgNwHEnJfT3RAkdRy.png" width="400">
+    <img src="https://share.balsamiq.com/c/hRPbhokepTYXTFQq2BacVJ.png" width="400">
+    <img src="https://share.balsamiq.com/c/eQoQfZM3wnM6fNXsmyJ4qK.png" width="400">
+</p>
+
+## UML Deployment Diagram
+<p align="center">
+    <img src="https://github.com/tarakchebrolu/202Project/assets/85508169/4ea27044-37bd-45fe-b4c9-c11ac640901d" width="800">
+</p>
+
+## UML Class Diagram
+<p align="center">
+    <img src="https://github.com/tarakchebrolu/202Project/assets/85508169/e2f10798-f336-4ed1-bcfc-687e98229973" width="800">
+</p>
+
+## CLOUD DEPLOYMENT Auto Scaled EC2 Cluster with Load Balancer
+<p align="center">
+    <img src="https://github.com/tarakchebrolu/202Project/assets/85508169/67961121-2641-4491-a995-6aa8473592bb" width="800">
+</p>
+
+
+<p align="center">
+    <img src="https://github.com/tarakchebrolu/202Project/assets/85508169/f181ea8e-a9d4-4a76-841a-2efa1edfcd16" width="800">
+
+</p>
+
+<p align="center">
+    <img src="https://github.com/tarakchebrolu/202Project/assets/85508169/4aa62f55-3691-4110-aa87-ac364219acd0" width="800">
+
+</p>
+
+
+<p align="center">
+    <img src="https://github.com/gopinathsjsu/team-project-team_polo/assets/56721119/0cb8ff27-4e74-466b-a9b0-1430495bbaf3" width="800">
+
+</p>
