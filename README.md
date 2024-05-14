@@ -27,10 +27,10 @@ This project is developed as part of the educational curriculum
 ## Tools and Languages
 
 - **Backend**: Python, Django
-- **Frontend**: HTML, CSS, jQuery
 - **UI Icons**: Bootstrap and CSS
+- **Frontend**: HTML, CSS, jQuery
 - **Database**: SQLite
-- **Deployment**: Amazon Web Services (AWS)
+- **Deployment**: Amazon Web Services (AWS) EC2 Lopadbalancer
 
 ## Running the Project Locally
 
