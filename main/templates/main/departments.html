@@ -1,0 +1,54 @@
+{% extends 'index.html' %}
+{% block title %} Departments | eLMS {% endblock title %}
+{% block profile %}
+{% if faculty %} {% url 'profile' faculty.faculty_id %}
+{% else %} {% url 'profile' student.student_id %}
+{% endif %}
+{% endblock %}
+{% block user %}
+{% if faculty %} {{faculty.name}}
+{% else %} {{student.name}}
+{% endif %}
+{% endblock user %}
+{% block courses %}
+{% url 'myCourses' %}
+{% endblock courses %}
+{% block allCourses %}
+{% url 'courses' %}
+{% endblock %}
+{% block departments %}
+{% url 'departments' %}
+{% endblock %}
+{% block content %}
+<div class="container p-4" style="background-color: #f5f5f5;">
+   <!-- navigation links -->
+   <nav class="breadcrumb-container" aria-label="breadcrumb">
+      <ol class="breadcrumb bg-transparent pl-0">
+         <li class="breadcrumb-item"><a href="#" style="color: #6c757d;">Home</a></li>
+         <li class="breadcrumb-item active" aria-current="page" style="color: #495057;">Departments</li>
+      </ol>
+   </nav>
+   <!-- navigation links end -->
+
+   {% if deps %}
+   <div class="text-muted fst-italic mb-2">Showing all departments</div>
+   <div class="row">
+       {% for dep in deps %}
+       <div class="col-md-4 mb-4">
+           <div class="card h-100 shadow" style="border-radius: 10px;">
+               <div class="card-body">
+                   <h5 class="card-title">{{ dep.name }}</h5>
+                   <p class="card-text"><small>Dept. ID: {{ dep.department_id }}</small></p>
+                   <p class="card-text">Students: {{ dep.student_count }}</p>
+                   <p class="card-text">Faculty: {{ dep.faculty_count }}</p>
+                   <p class="card-text">Courses: {{ dep.course_count }}</p>
+               </div>
+           </div>
+       </div>
+       {% endfor %}
+   </div>
+   {% else %}
+   <div class="text-center h4 text-secondary">No Departments to show</div>
+   {% endif %}
+</div>
+{% endblock  %}

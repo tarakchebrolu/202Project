@@ -1,0 +1,117 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block title %}{{ quiz.title }} | {{ course.name }} {% endblock title %}
+{% block profile %}
+    {% url 'profile' student.student_id %}
+{% endblock %}
+{% block user %}
+    {{ student.name }}
+{% endblock user %}
+{% block courses %}
+    {% url 'myCourses' %}
+{% endblock courses %}
+{% block allCourses %}
+    {% url 'courses' %}
+{% endblock %} 
+{% block content %}
+<!-- Navigation links -->
+<div class="container-fluid bg-light mb-4">
+   <div class="container py-3">
+      <nav aria-label="breadcrumb">
+         <ol class="breadcrumb bg-transparent">
+            <li class="breadcrumb-item"><a href="{% url 'facultyCourses' %}" class="text-dark">My Courses</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'course' course.code %}" class="text-dark">{{ course.name }}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'myQuizzes' course.code %}" class="text-dark">Quizzes</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ quiz.title }}</li>
+         </ol>
+      </nav>
+   </div>
+</div>
+<!-- Navigation links end -->
+
+<div class="container">
+   <div class="card bg-primary text-light mb-4">
+      <div class="card-body">
+         <div class="row">
+            <div class="col-md-6">
+               <h2 class="card-title fs-4">{{ quiz.title }} Summary</h2>
+               <p class="card-text">{{ quiz.description }}</p>
+               <p class="card-text"><span class="fw-bold">Total Questions:</span> {{ quiz.total_questions }}</p>
+               <p class="card-text"><span class="fw-bold">Marks:</span> {{ quiz.total_marks_obtained }} / {{ quiz.total_marks }}</p>
+               <p class="card-text"><span class="fw-bold">Time taken:</span> <span id="timetaken" class="fw-bold"></span></p>
+            </div>
+            <div class="col-md-6">
+               <p class="card-text"><span class="fw-bold">Started:</span> {{ quiz.starts }}</p>
+               <p class="card-text"><span class="fw-bold">Ended:</span> {{ quiz.ends }}</p>
+               <p class="card-text"><span class="fw-bold">Duration:</span> {{ quiz.duration }}</p>
+               <p class="card-text"><span class="fw-bold">Submitted on:</span> {{ quiz.submission_time }}</p>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   {% for question in questions %}
+   <div class="card mb-4">
+      <div class="card-body {% if question.student_answer == question.answer %} bg-success text-light {% else %} bg-danger text-light {% endif %}">
+         <div class="fw-bold fs-5">{{ forloop.counter }}. {{ question.question }}</div>
+         <div class="d-flex justify-content-between mt-3">
+            <div class="options">
+               <p class="mb-0"><span class="fw-bold">A:</span> {{ question.option1 }}</p>
+               <p class="mb-0"><span class="fw-bold">B:</span> {{ question.option2 }}</p>
+               <p class="mb-0"><span class="fw-bold">C:</span> {{ question.option3 }}</p>
+               <p class="mb-0"><span class="fw-bold">D:</span> {{ question.option4 }}</p>
+            </div>
+            <div class="answer-status">
+               {% if question.student_answer == question.answer %}
+               <span class="fw-bold"><img src="{% static 'images/icon/tick.png' %}" alt="Correct" class="me-1"> Correct</span>
+               {% else %}
+               <span class="fw-bold"><img src="{% static 'images/icon/cross.png' %}" alt="Incorrect" class="me-1"> Incorrect</span>
+               {% endif %}
+            </div>
+         </div>
+         <div class="mt-3">
+            {% if not question.student_answer %}
+            <span class="fw-bold" style="font-size:15px">You did not answer!</span>
+            {% endif %}
+         </div>
+         <div class="mt-3">
+            <span class="fw-bold">Correct answer is:</span> <span class="fw-bold">{{ question.answer }}: {{ question.get_answer }}</span>
+         </div>
+         {% if question.explanation %}
+         <div class="mt-3">
+            <span class="fw-bold">Explanation:</span> {{ question.explanation }}
+         </div>
+         {% endif %}
+      </div>
+   </div>
+   {% endfor %}
+</div>
+
+<script>
+   // Function to convert time
+   let time_taken = {{ quiz.time_taken }};
+   function convertTime(timetaken) {
+       var hours = Math.floor(timetaken / 3600);
+       var minutes = Math.floor((timetaken - (hours * 3600)) / 60);
+       var seconds = timetaken - (hours * 3600) - (minutes * 60);
+       seconds = Math.floor(seconds);
+       if (hours < 10) {
+           hours = "0" + hours;
+       }
+       if (minutes < 10) {
+           minutes = "0" + minutes;
+       }
+       if (seconds < 10) {
+           seconds = "0" + seconds;
+       }
+       if (hours == 0 && minutes == 0) {
+           return seconds + " seconds";
+       } else if (hours == 0) {
+           return minutes + ':' + seconds + " minutes";
+       } else {
+           return hours + ':' + minutes + ':' + seconds + " hours";
+       }
+   }
+   document.getElementById('timetaken').innerHTML = convertTime(time_taken);
+</script>
+{% endblock %}

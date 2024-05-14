@@ -1,0 +1,142 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block title %}{{ course.name }} | eLMS{% endblock title %}
+
+{% block profile %}
+{% url 'profile' student.student_id %}
+{% endblock %}
+
+{% block user %}
+{{ student.name }}
+{% endblock user %}
+
+{% block courses %}
+{% url 'myCourses' %}
+{% endblock courses %}
+
+{% block allCourses %}
+{% url 'courses' %}
+{% endblock allCourses %}
+
+{% block content %}
+<style>
+    /* Global navigation styling */
+    .custom-navbar {
+        background-color: #0b6ab8 !important; /* Restoring blue color */
+        color: white !important;
+    }
+
+    /* In-page navigation links */
+    .custom-nav-link {
+        background-color: transparent !important; /* Transparent background to inherit from navbar */
+        color: white !important;
+    }
+
+    .thead-dark {
+    background-color: #0b6ab8;
+    color: white;
+}
+
+    /* Assignment and Quiz link color */
+    .custom-link {
+        color: black !important; /* For links inside cards */
+    }
+
+    /* Right aligned date display style */
+    .custom-date-display {
+        float: right;
+        color: #6c757d; /* Bootstrap's default muted text color */
+    }
+
+    /* Custom class for section headers */
+    .custom-card-header {
+        background-color: #0b6ab8 !important; /* A different shade of blue for clear distinction */
+        color: white !important;
+    }
+
+    /* Styles for list items in each section to ensure clear readability */
+    .custom-list-group-item {
+        background-color: white !important; /* Keeping the list items white for contrast */
+        color: black !important;
+        border-color: #ddd !important; /* Light grey border for distinction */
+    }
+</style>
+
+<div class="container mt-4">
+   <!-- Global Navigation Bar -->
+   <nav class="navbar navbar-expand-lg navbar-dark rounded custom-navbar">
+      <div class="container-fluid">
+         <a class="navbar-brand" href="{% url 'myCourses' %}">{{ course.name }}</a>
+         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+         </button>
+         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav ms-auto">
+               <a class="nav-link custom-nav-link" href="{% url 'myQuizzes' course.code %}">Quizzes</a>
+               <a class="nav-link custom-nav-link" href="{% url 'view_course_students' course_id=course.code %}">Students</a>
+            </div>
+         </div>
+      </div>
+   </nav>
+   <!-- End of Global Navigation Bar -->
+
+   <!-- Assignments Section -->
+   <div class="card mt-3">
+      <div class="card-header custom-card-header">
+         Assignments
+      </div>
+      <ul class="list-group list-group-flush">
+         {% for assignment in assignments %}
+         <li class="list-group-item custom-list-group-item d-flex justify-content-between align-items-center">
+            <a href="{% url 'assignmentPage' course.code assignment.id %}" class="custom-link">{{ assignment.title }}</a>
+            <span class="custom-date-display">{{ assignment.due_date }}</span>
+         </li>
+         {% empty %}
+         <li class="list-group-item custom-list-group-item">No assignments given yet.</li>
+         {% endfor %}
+      </ul>
+   </div>
+   <!-- End of Assignments Section -->
+
+   <!-- Announcement Section -->
+   <div class="card mt-3">
+      <div class="card-header custom-card-header">
+         Announcements
+      </div>
+      <ul class="list-group list-group-flush">
+         {% for announcement in announcements %}
+         <li class="list-group-item custom-list-group-item">
+            {{ announcement.description|striptags }}
+            <span class="custom-date-display">{{ announcement.post_date }}</span>
+         </li>
+         {% empty %}
+         <li class="list-group-item custom-list-group-item">No announcements have been posted.</li>
+         {% endfor %}
+      </ul>
+   </div>
+   <!-- End of Announcement Section -->
+
+   <!-- Course Material Section -->
+   <div class="card mt-3 mb-4">
+      <div class="card-header custom-card-header">
+          Course Materials
+      </div>
+      <ul class="list-group list-group-flush">
+          {% for material in materials %}
+          <li class="list-group-item custom-list-group-item d-flex justify-content-between align-items-center">
+              {{ material.description|striptags }}
+              {% if material.file %}
+              <div class="custom-date-display">
+                  {{ material.post_date|date:"D, d M Y" }}
+                  <a href="{{ material.file.url }}" class="btn btn-outline-primary btn-sm">Download</a>
+              </div>
+              {% endif %}
+          </li>
+          {% empty %}
+          <li class="list-group-item custom-list-group-item">Course materials not available.</li>
+          {% endfor %}
+      </ul>
+   </div>
+   <!-- End of Course Material Section -->
+</div>
+{% endblock %}

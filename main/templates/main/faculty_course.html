@@ -1,0 +1,141 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block title %}{{ course.name }} | eLMS{% endblock %}
+
+{% block profile %}
+{% url 'profile' faculty.faculty_id %}
+{% endblock %}
+
+{% block user %}
+{{ faculty.name }}
+{% endblock %}
+
+{% block courses %}
+{% url 'facultyCourses' %}
+{% endblock %}
+
+{% block allCourses %}
+{% url 'courses' %}
+{% endblock %}
+
+{% block content %}
+<style>
+    /* Styling for navigation bars, links, and section headers */
+    .custom-navbar, .custom-card-header {
+        background-color: #0b6ab8 !important;
+        color: white !important;
+    }
+    .custom-nav-link {
+        color: white !important;
+        text-decoration: none;
+    }
+    .custom-nav-link:hover {
+        color: white !important;
+        background-color: transparent !important;
+    }
+    .custom-link {
+        color: black !important;
+    }
+    .custom-date-display {
+        float: right;
+        color: #6c757d;
+    }
+    .custom-list-group-item {
+        background-color: white;
+        color: black !important;
+        border-color: #ddd !important;
+    }
+    .add-text, .remove-text {
+        float: right;
+        color: white;
+        cursor: pointer;
+        text-decoration: none;
+    }
+    .remove-text {
+        color: red; /* Set the color of the remove text to red */
+        margin-right: 15px; /* Adds spacing between the remove text and whatever is next to it */
+    }
+</style>
+
+<div class="container mt-4">
+    <!-- Global Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark rounded custom-navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'facultyCourses' %}">{{ course.name }}</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav ms-auto">
+                    <a class="nav-link custom-nav-link" href="{% url 'allQuizzes' course.code %}">Quizzes</a>
+                    <a class="nav-link custom-nav-link" href="{% url 'view_course_students' course_id=course.code %}">Students</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Assignments Section -->
+    <div class="card mt-3">
+        <div class="card-header custom-card-header">
+            Assignments
+            <span class="add-text" onclick="location.href='{% url 'addAssignment' course.code %}';">Post</span> <!-- Added a semicolon here -->
+        </div>
+        <ul class="list-group list-group-flush">
+            {% for assignment in assignments %}
+            <li class="list-group-item custom-list-group-item">
+                <a href="{% url 'submission' course.code assignment.id %}" class="custom-link">{{ assignment.title }}</a>
+                <div class="custom-date-display">{{ assignment.post_date }}</div>
+            </li>
+            {% empty %}
+            <li class="list-group-item custom-list-group-item">No assignments given yet.</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Announcement Section -->
+    <div class="card mt-3">
+        <div class="card-header custom-card-header">
+            Announcements
+            <span class="add-text" onclick="location.href='{% url 'addAnnouncement' course.code %}';">Post</span> <!-- Added a semicolon here -->
+        </div>
+        <ul class="list-group list-group-flush">
+            {% for announcement in announcements %}
+            <li class="list-group-item custom-list-group-item d-flex justify-content-between">
+                {{ announcement.description|striptags }}
+                <div>
+                    <div class="custom-date-display">{{ announcement.post_date }}</div>
+                    <span class="remove-text" onclick="location.href='{% url 'deleteAnnouncement' course.code announcement.id %}';">Remove</span> <!-- Added a semicolon here -->
+                </div>
+            </li>
+            {% empty %}
+            <li class="list-group-item custom-list-group-item">No announcements have been posted.</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Course Material Section -->
+<div class="card mt-3 mb-4">
+   <div class="card-header custom-card-header">
+       Course Materials
+       <span class="add-text" onclick="location.href='{% url 'addCourseMaterial' course.code %}';">Post</span> <!-- Added a semicolon here -->
+   </div>
+   <ul class="list-group list-group-flush">
+       {% for material in materials %}
+       <li class="list-group-item custom-list-group-item d-flex justify-content-between">
+           {{ material.description|striptags }}
+           <div>
+               {% if material.file %}
+               <span class="remove-text" onclick="location.href='{% url 'deleteCourseMaterial' course.code material.id %}';">Remove</span> <!-- Added a semicolon here -->
+               <a href="{{ material.file.url }}" class="btn btn-outline-primary btn-sm">Download</a>
+               {% endif %}
+               <div class="custom-date-display">{{ material.post_date|date:"D, d M Y" }}</div>
+           </div>
+       </li>
+       {% empty %}
+       <li class="list-group-item custom-list-group-item">Course materials not available.</li>
+       {% endfor %}
+   </ul>
+</div>
+
+</div>
+{% endblock %}

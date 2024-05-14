@@ -1,0 +1,95 @@
+{% extends 'index.html' %}
+{% block title %}Quizzes | {{ course.name }} {% endblock title %}
+{% block profile %}
+{% url 'profile' student.student_id %}
+{% endblock %}
+{% block user %}
+{{ student.name }}
+{% endblock user %}
+{% block courses %}
+{% url 'myCourses' %}
+{% endblock courses %}
+{% block allCourses %}
+{% url 'courses' %}
+{% endblock %} 
+{% block content %}
+<div class="container mt-4">
+   <!-- navigation links -->
+   <nav aria-label="breadcrumb">
+      <ol class="breadcrumb bg-primary p-3 rounded" style="background-color: #0b6ab8;">
+         <li class="breadcrumb-item"><a href="{% url 'facultyCourses' %}" style="color: rgb(0, 0, 0);">My Courses</a></li>
+         <li class="breadcrumb-item"><a href="{% url 'course' course.code %}" style="color: rgb(0, 0, 0);">{{ course.name }}</a></li>
+         <li class="breadcrumb-item active" aria-current="page">Quizzes</li>
+      </ol>
+   </nav>
+   <!-- navigation links end -->
+   <div class="container">
+      <h3 class="fw-bold mb-4" style="color: #ffffff;">Active Quizzes</h3>
+      <div class="table-responsive">
+         <table class="table table-bordered table-striped text-center" style="background-color: #0b6ab8; color: rgb(2, 1, 1);">
+            {% if active_quizzes %}
+            <thead style="background-color: #0b6ab8;">
+               <tr style="color: rgb(255, 255, 255);">
+                  <th scope="col">S.No</th>
+                  <th scope="col">Quiz Name</th>
+                  <th scope="col">Starts</th>
+                  <th scope="col">Ends</th>
+                  <th scope="col">Total Questions</th>
+                  <th scope="col">Total Marks</th>
+               </tr>
+            </thead>
+            <tbody style="background-color: #ffffff;">
+               {% for quiz in active_quizzes %}
+               <tr>
+                  <td>{{ forloop.counter }}</td>
+                  <td><a href="{% url 'startQuiz' course.code quiz.id %}" style="color: rgb(3, 3, 3);">{{ quiz.title }}</a></td>
+                  <td>{{ quiz.starts }}</td>
+                  <td>{{ quiz.ends }}</td>
+                  <td>{{ quiz.total_questions }}</td>
+                  <td>{{ quiz.total_marks }}</td>
+               </tr>
+               {% endfor %}
+            </tbody>
+         </table>
+         {% else %}
+         <p>No active quizzes available.</p>
+         {% endif %}
+      </div>
+      <h3 class="fw-bold mt-4" style="color: #0c0c0c;">Previous Quizzes</h3>
+      <div class="table-responsive">
+         <table class="table table-bordered table-striped text-center" style="background-color: #0b6ab8; color: rgb(3, 3, 3);">
+            {% if previous_quizzes %}
+            <thead style="background-color: #0b6ab8;">
+               <tr style="color: rgb(255, 255, 255);">
+                  <th scope="col">S.No</th>
+                  <th scope="col">Quiz Name</th>
+                  <th scope="col">Ended</th>
+                  <th scope="col">Marks Obtained</th>
+                  <th scope="col">Percentage</th>
+               </tr>
+            </thead>
+            <tbody style="background-color: #ffffff;">
+               {% for quiz in previous_quizzes %}
+               <tr>
+                  <td>{{ forloop.counter }}</td>
+                  <td>
+                     {% if quiz.attempted %}
+                     {{ quiz.title }}
+                     {% else %}
+                     <a href="#" style="color: rgb(5, 5, 5);">{{ quiz.title }}</a>
+                     {% endif %}
+                  </td>
+                  <td>{{ quiz.ends }}</td>
+                  <td>{{ quiz.total_marks_obtained }} / {{ quiz.total_marks }}</td>
+                  <td>{{ quiz.percentage }}%</td>
+               </tr>
+               {% endfor %}
+            </tbody>
+         </table>
+         {% else %}
+         <p>No previous quiz attempts.</p>
+         {% endif %}
+      </div>
+   </div>
+</div>
+{% endblock %}

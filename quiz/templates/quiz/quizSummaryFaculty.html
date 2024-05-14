@@ -1,0 +1,185 @@
+{% extends 'index.html' %}
+
+{% block title %}
+    {{ quiz.title }} | {{ course.name }}
+{% endblock title %}
+
+{% block profile %}
+    {% url 'profile' faculty.faculty_id %}
+{% endblock profile %}
+
+{% block user %}
+    {{ faculty.name }}
+{% endblock user %}
+
+{% block courses %}
+    {% url 'facultyCourses' %}
+{% endblock courses %}
+
+{% block allCourses %}
+    {% url 'courses' %}
+{% endblock %}
+
+{% block content %}
+    <!-- Navigation links -->
+    <div class="container-fluid bg-primary text-light p-4">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb bg-transparent mb-0">
+                <li class="breadcrumb-item"><a href="{% url 'facultyCourses' %}" class="text-light">My Courses</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'faculty' course.code %}" class="text-light">{{ course.name }}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'allQuizzes' course.code %}" class="text-light">Quizzes</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ quiz.title }}</li>
+            </ol>
+        </nav>
+    </div>
+    <!-- Navigation links end -->
+
+    <div class="container-fluid bg-light p-4 rounded shadow-sm mb-4">
+        {% if quiz.start < time %}
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="fs-5 fw-bold">{{ quiz.title }} - Summary</div>
+                    <div class="text-break mb-3 opacity-75">{{ quiz.description }}</div>
+                    <div>
+                        <p><i class="material-icons-outlined me-2"></i>Student Participated: <span class="fw-bold">{{ quiz.attempted_students }}/{{ total_students }}</span></p>
+                        <p><i class="material-icons-outlined me-2"></i>Total Questions: <span class="fw-bold">{{ quiz.total_questions }}</span></p>
+                    </div>
+                </div>
+                <div class="col-md-6 border-start">
+                    <p><i class="material-icons-outlined me-2"></i>Start: <span class="fw-bold">{{ quiz.starts }}</span></p>
+                    <p><i class="material-icons-outlined me-2"></i>End: <span class="fw-bold">{{ quiz.ends }}</span></p>
+                    {% if quiz.total_marks %}
+                        <p><i class="material-icons-outlined me-2"></i>Total Marks: <span class="fw-bold">{{ quiz.total_marks }}</span></p>
+                    {% endif %}
+                    <p><i class="material-icons-outlined me-2"></i>Quiz Duration: <span class="fw-bold">{{ quiz.duration }}</span></p>
+                </div>
+            </div>
+            {% endif %}
+    </div>
+    {% if quiz.publish_status %}
+    <p class="text-success fw-bold text-center my-3">Marks Published!</p>
+    {% else %}
+    <div class="text-center my-3">
+        <form method="post" action="{% url 'quizSummary' course.code quiz.id %}">
+            {% csrf_token %}
+            <button class="btn btn-primary btn-sm">Publish Marks</button>
+        </form>
+    </div>
+    {% endif %}
+    <div class="container p-3 shadow-sm rounded" id="allmarks">
+        <div class="fw-bold">Marks of students</div>
+        {% if quiz.attempted_students %}
+        <div class="table-responsive">
+            <table class="table text-center table-borderless">
+                <thead>
+                    <tr>
+                        <th scope="col">SL</th>
+                        <th scope="col" colspan="2">Student</th>
+                        <th scope="col">ID</th>
+                        <th scope="col">Marks</th>
+                        <th scope="col">Submitted on</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in students %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td class="text-end"><img src="/media/{{ student.photo }}" alt="image" class="rounded-circle" style="height: 2.5rem;"></td>
+                        <td class="fw-bold text-start">{{ student.name }}</td>
+                        <td>{{ student.student_id }}</td>
+                        {% if student.attempted %}
+                        <td>{{ student.total_marks_obtained }} / {{ quiz.total_marks }}</td>
+                        <td>{{ student.submission_time }}</td>
+                        {% else %}
+                        <td>Did not attempt</td>
+                        <td>Did not attempt</td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="text-center">No students have attempted this quiz yet</div>
+        {% endif %}
+    </div>
+    <div class="container p-3">
+        <!-- Removed the section with "Click on a question to show details" -->
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var color = [
+        '#0b6ab8',
+        '#ffffff'
+    ];
+    {% for question in questions %}
+    var data{{question.id}} = {
+        labels: [
+            'A',
+            'B',
+            'C',
+            'D'
+        ],
+        datasets: [{
+            data: [{{question.A}}, {{question.B}}, {{question.C}}, {{question.D}}],
+            backgroundColor: color,
+            borderColor: color,
+            borderWidth: 1,
+            hoverBorderColor: 'deepskyblue',
+            hoverBorderWidth: 1,
+            hoverBorderRadius: 5,
+            hoverBorderDash: [5, 5],
+            hoverBorderDashOffset: 0.0,
+        }]
+    };
+    {% endfor %}
+
+    {% for question in questions %}
+    var ctx{{question.id}} = document.getElementById('canvas{{question.id}}').getContext('2d');
+    var myChart{{question.id}} = new Chart(ctx{{question.id}}, {
+        type: 'doughnut',
+        data: data{{question.id}},
+        options: {
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Responses',
+                }
+            },
+            animation: true,
+            animationSteps: 60,
+            animationEasing: 'easeOutBounce',
+            maintainAspectRatio: false,
+            legend: {
+                display: true,
+                position: 'bottom',
+                labels: {
+                    fontColor: '#0b6ab8'
+                }
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        startAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+    {% endfor %}
+
+    $(document).ready(function () {
+        $('.bt').click(function () {
+            $('html, body').animate({
+                scrollTop: $(document).height()
+            }, '1000');
+        });
+    });
+
+    $('#allmarks').show(); // Show marks directly when the page loads
+
+</script>
+
+{% endblock %}

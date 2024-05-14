@@ -1,0 +1,174 @@
+<!--This page is used in faculty side, to view the assignment info and submission details-->
+
+{% extends 'index.html' %}
+{% load static %}
+{% block title %} {{ assignment.title }} - eLMS {% endblock title %}
+{% block profile %}
+{% url 'profile' faculty.faculty_id %}
+{% endblock %}
+{% block user %}
+{{faculty.name}}
+{% endblock user %}
+{% block allCourses %}
+{% url 'courses' %}
+{% endblock %}
+{% block courses %}
+{% url 'facultyCourses' %}
+{% endblock courses %}
+{% block content %}
+<!-- navigation links -->
+<div class="container shadow-sm">
+   <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+      <ol class="breadcrumb p-3">
+         <li class="breadcrumb-item fw-bold"><a style="color: rgb(10, 10, 48)" href="{% url 'facultyCourses' %}">My
+            Courses</a>
+         </li>
+         <li class="breadcrumb-item fw-bold"><a style="color: rgb(10, 10, 48)"
+            href="{% url 'faculty' course.code %}">{{ course.name }}</a></li>
+         <li class="breadcrumb-item active animate__animated animate__backInRight" aria-current="page">Assignment <span>
+            ({{ assignment.title }})</span> 
+         </li>
+      </ol>
+   </nav>
+</div>
+
+
+
+<!-- navigation links end -->
+<div class="container text-center">
+
+      <h2 class="fw-bold">{{assignment.title}}</h2>
+
+
+</div>
+
+
+<div class="container">
+   <div class="shadow rounded p-3 assignment-info  row col-lg-12">
+
+
+      <span class="d-grid col-4 text-center">
+      <h6 class="p-2 fw-bold">Deadline: <span class="px-2" style="color:red"> {{assignment.due_date}} </span></h6>
+      </span>
+
+      <span class="d-grid col-4 text-center">
+      <label class="p-2 fw-bold" for="">
+      Submitted : {{assignment.submission_set.count}}/{{totalStudents}}
+      </label><br>
+
+      </span>
+
+      <span class="d-grid col-4 text-center">
+          <label class="p-2 fw-bold" for="">Time Remaining : <span class="fw-semibold" id="timeRemain"></span></label>
+      </span>
+
+   </div>
+
+</div>
+
+
+
+
+<div class="container">
+
+<h6 class="text-muted fw-bold fst-italic mt-3">Showing all submissions:</h6>
+</div>
+
+
+
+<!--Student grading table-->
+<div class="container assignment-info">
+   <div class="table-responsive">
+      <table class="table shadow rounded" style="white-space: nowrap;">
+         <thead class="bg-primary text-white">
+            <tr>
+               <th class="text-center" scope="col" colspan="2"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="24" height="24" fill="#FFF"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"/></svg> Student</th>
+               <th class="text-center" scope="col"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="24" height="24" fill="#FFF"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M181.3 32.4c17.4 2.9 29.2 19.4 26.3 36.8L197.8 128h95.1l11.5-69.3c2.9-17.4 19.4-29.2 36.8-26.3s29.2 19.4 26.3 36.8L357.8 128H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H347.1L325.8 320H384c17.7 0 32 14.3 32 32s-14.3 32-32 32H315.1l-11.5 69.3c-2.9 17.4-19.4 29.2-36.8 26.3s-29.2-19.4-26.3-36.8l9.8-58.7H155.1l-11.5 69.3c-2.9 17.4-19.4 29.2-36.8 26.3s-29.2-19.4-26.3-36.8L90.2 384H32c-17.7 0-32-14.3-32-32s14.3-32 32-32h68.9l21.3-128H64c-17.7 0-32-14.3-32-32s14.3-32 32-32h68.9l11.5-69.3c2.9-17.4 19.4-29.2 36.8-26.3zM187.1 192L165.8 320h95.1l21.3-128H187.1z"/></svg> Student ID</th>
+               <th class="text-center" scope="col"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="24" height="24" fill="#FFF"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M0 64C0 28.7 28.7 0 64 0H224V128c0 17.7 14.3 32 32 32H384V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V64zm384 64H256V0L384 128z"/></svg> Submitted file</th>
+               <th class="text-center" scope="col"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="24" height="24" fill="#FFF"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M128 0c17.7 0 32 14.3 32 32V64H288V32c0-17.7 14.3-32 32-32s32 14.3 32 32V64h48c26.5 0 48 21.5 48 48v48H0V112C0 85.5 21.5 64 48 64H96V32c0-17.7 14.3-32 32-32zM0 192H448V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V192zm64 80v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V272c0-8.8-7.2-16-16-16H80c-8.8 0-16 7.2-16 16zm128 0v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V272c0-8.8-7.2-16-16-16H208c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V272c0-8.8-7.2-16-16-16H336zM64 400v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H80c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H208zm112 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H336c-8.8 0-16 7.2-16 16z"/></svg> Submitted on</th>
+               <th class="text-center" scope="col" style="min-width: 150px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="24" height="24" fill="#FFF"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/></svg> Grade</th>
+            </tr>
+         </thead>
+         <tbody>
+            {% if not submissions %}
+            <td class="text-center text-muted fst-italic" colspan="6">No one has submitted yet</th>
+               {% else %}
+               {% for submission in submissions %}
+            <tr>
+               <td class="text-center"><img class="rounded-circle" src="/media/{{ submission.student.photo}}" alt="image"
+                  style="height: 2.5rem;"></td>
+               <td>{{submission.student.name}}</td>
+               <td class="text-center"><span>{{ submission.student_id }}</span></td>
+               <td class="text-center"><a
+                  class="fw-bold px-2 py-1 text-primary bg-primary bg-opacity-10 border border-priamry border-opacity-10 rounded-2"
+                  style="text-decoration: none; font-size: smaller !important" download
+                  href="{{submission.file.url}}">Download</a></td>
+               <td class="text-center">{{submission.submission_date}}</td>
+               {% if submission %}
+               <td class="text-center" style="min-width: 150px;">
+                  <form action="{% url 'gradeSubmission' course.code assignment.id submission.id %}"
+                     method="post">
+                     {% csrf_token %}
+                     <div class="d-flex justify-content-center">
+                        <div class="form-group">
+                           <input class="form-control text-center" type="number" placeholder="Marks" name="marks" id="marks"
+                              max="{{ assignment.marks}}" step=".1" min="0" value="{{submission.marks}}" required>
+                        </div>
+                        <button
+                           type="submit" class="btn btn-sm ms-2 rounded-2"><img
+                           src="{% static 'images/icon/check.png' %}" alt="set" style="height:1rem"></button>
+                     </div>
+               </td>
+               {% else %}
+               <td class="text-center" style="min-width: 150px;">
+               <form action="{% url 'gradeSubmission' course.code assignment.id submission.id %}"
+                  method="post">
+               {% csrf_token %}
+               <div class="d-flex justify-content-center">
+               <div class="form-group">
+               <input class="form-control text-center" type="number" placeholder="Marks" name="marks" id="marks"
+                  max="{{ assignment.marks}}" step=".1" min="0" required value="{{submission.marks}}"></div><button type="submit"
+                  class="btn btn-outline-primary btn-sm ms-2"><img
+                  src="{% static 'images/icon/check.png' %}" alt="set" style="height:1rem"></button>
+               </div>
+               </td>
+               {% endif %}
+               </form>
+            </tr>
+            {% endfor %}
+            {% endif %}
+         </tbody>
+      </table>
+   </div>
+</div>
+<script>
+   let assignment = document.querySelectorAll('.assignment-info');
+   anime({
+      targets: assignment,
+      opacity: [0, 1],
+      easing: 'easeInOutQuad',
+      duration: 1500,
+      delay: function (el, i) {
+         return i * 250;
+      }
+   });
+   
+   var time = new Date('{{ assignment.deadline|date:"D, d M Y H:i:s"}}').getTime();
+   var rand = setInterval(function () {
+       var now = new Date().getTime();
+       var difference = time - now;
+       var days = Math.floor(difference / (1000 * 60 * 60 * 24));
+       var hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+       var minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+       var seconds = Math.floor((difference % (1000 * 60)) / 1000);
+   
+       document.getElementById("timeRemain").innerHTML = days + " days " + hours + " hours ";
+   
+       if (difference < 0) {
+           clearInterval(rand);
+           document.getElementById("timeRemain").innerHTML = "Closed!";
+           document.getElementById("timeRemain").style.color = "red";
+       }
+   }, 1000);
+</script>
+{% endblock %}

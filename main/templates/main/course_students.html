@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Students in {{ course.name }}</title>
+    <!-- Bootstrap CSS for styling -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            padding-top: 20px;
+            background-color: #f4f4f4;
+        }
+        .table-hover tbody tr:hover {
+            color: #212529;
+            background-color: #e9ecef;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+        .breadcrumb {
+            background: #e9ecef;
+            border-radius: 0.25rem;
+        }
+        /* Ensuring this is the only style for thead-dark to avoid conflicts */
+        .thead-dark th {
+            background-color: #0b6ab8; /* Dark blue header */
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Students in {{ course.name }}</h1>
+        <nav style="--bs-breadcrumb-divider: '>'; " aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active" aria-current="page">Course Details</li>
+            </ol>
+        </nav>
+
+        <table class="table table-bordered table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Student Name</th>
+                    <th scope="col">Grade (%)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in student_grades %}
+                <tr>
+                    <td>{{ entry.student.name }}</td>
+                    <td>{{ entry.grade|floatformat:2 }}%</td>
+                </tr>
+                {% endfor %}
+                {% if not student_grades %}
+                <tr>
+                    <td colspan="2" class="text-center">No students or grades to display.</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
