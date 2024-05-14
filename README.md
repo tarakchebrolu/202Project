@@ -10,9 +10,6 @@ This project is developed as part of the educational curriculum
 - **Akhilandeswari Battineni (016762174)** - #write work done
 - **Supriya Katragadda (016942497)** - #write work done
 
-## Project Generated With
-- Angular CLI version 15.2.0
-
 ## XP Values
 
 ### Communication
