@@ -80,9 +80,8 @@ python manage.py runserver
 ## Burndown Chart
 
 <p align="center">
-<img width="738" alt="Screenshot 2024-05-09 at 9 22 46 PM" src="https://github.com/gopinathsjsu/team-project-team_polo/assets/147278071/28b0a4cb-acd7-4034-b22e-de3451a29f74">
+    <img src="https://github.com/tarakchebrolu/202Project/assets/85508169/809ff843-fb04-4ca7-8b5f-bde7afbf5c8e" width="800">
 </p>
-
 
 ## UI Wireframes
 
